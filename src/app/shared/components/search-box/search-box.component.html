@@ -1,0 +1,15 @@
+<input
+  type="text"
+  [placeholder]="placeholder"
+  class="form-control"
+  (keyup.enter)="emitValue( txtInput.value )"
+  #txtInput
+  >
+
+  <!--
+  * (keyup.enter) es eventListener que manda a llamar a la función
+  * "emitValue()" y le pasa como parametro el value del input todo esto
+  * gracias a la "referencia local html": (#txtInput)
+  -->
+
+<hr>
