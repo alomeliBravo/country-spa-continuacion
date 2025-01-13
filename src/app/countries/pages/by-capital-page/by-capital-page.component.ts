@@ -10,15 +10,21 @@ import { Country } from '../../interfaces/country';
 export class ByCapitalPageComponent {
 
   public countries: Country[] = [];
+  public isLoading: boolean = false; //Empieza como falso
 
   constructor( private countriesService: CountriesService) {}
+
 
   //!Aunque estemos llamando al observable, si no nos suscribimos este
   //!no va a mandar nada
   searchByCapital( term: string ):void {
+
+    this.isLoading =  true; //Una vez se hace la busqueda se activa
+
     this.countriesService.searchCapital( term )
     .subscribe( countries => {
       this.countries = countries;
+      this.isLoading = false; //Se oculta una vez obtiene los valores
     });
   }
 

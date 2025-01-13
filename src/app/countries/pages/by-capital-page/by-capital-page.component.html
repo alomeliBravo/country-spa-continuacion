@@ -24,7 +24,7 @@
 <div class="row">
   <div class="col">
     <hr>
-    <shared-loading-spinner placeholder="Buscando por capital..." ></shared-loading-spinner>
+    <shared-loading-spinner placeholder="Buscando por capital..." *ngIf="isLoading" ></shared-loading-spinner>
     <countries-table [countries]="countries" ></countries-table>
   </div>
 </div>

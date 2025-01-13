@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class LoadingSpinnerComponent {
 
+  //Recibe el texto dependiendo de la página donde se encuentre
   @Input()
   public placeholder:string = '';
 
