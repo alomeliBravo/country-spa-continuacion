@@ -21,11 +21,15 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   @Input()
   public placeholder: string = '';
 
+  @Input()
+  public initialValue: string = '';
+
   @Output()
   public onValue: EventEmitter<string> = new EventEmitter();
 
   @Output()
   public onDebounce = new EventEmitter<string>();
+
 
   //* debounceTime es un operador de RXJS el cual recibe dos parametros
   //* dueTime: Cuanto tiempo quiero esperar para esperar la siguiente emisión

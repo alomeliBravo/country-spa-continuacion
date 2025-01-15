@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Country } from '../../interfaces/country';
 import { CountriesService } from '../../services/countries.service';
-
-//*Se utiliza "type" cuando sabemos que nuestra información no se va a expandir
-type Region = 'Africa' | 'America' | 'Asia' | 'Europe' | 'Oceania';
+import { Region } from '../../interfaces/region.type';
 
 @Component({
   selector: 'app-by-country-region',

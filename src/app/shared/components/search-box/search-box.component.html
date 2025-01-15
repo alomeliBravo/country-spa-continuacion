@@ -1,6 +1,7 @@
 <!-- (keyup.enter)="emitValue( txtInput.value )" -->
 <input
   type="text"
+  [value]="initialValue"
   [placeholder]="placeholder"
   class="form-control"
   (keyup)="onKeyPress(txtInput.value)"
@@ -12,5 +13,3 @@
   * "emitValue()" y le pasa como parametro el value del input todo esto
   * gracias a la "referencia local html": (#txtInput)
   -->
-
-<hr>
