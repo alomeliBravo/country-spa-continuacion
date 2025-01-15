@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { Country } from '../interfaces/country';
 import { CacheStore } from '../interfaces/cache-store.interface';
+import { Region } from '../interfaces/region.type';
 
 @Injectable({providedIn: 'root'})
 export class CountriesService {
@@ -37,6 +38,12 @@ export class CountriesService {
 
   //*Metodo el cual recibe el termino que vamos a buscar
   //*Los observables son de la programación reactiva
+
+  //*Tap es un operador de RXJS el cuál se utiliza para ejecutar efectos secundarios
+  //*En un flujo de datos sin modificar, los datos que pasan a través de ese flujo.
+
+  //*Es útil es Depuración, registro de logs, disparar efectos secundarios como actualizar variables externas
+
   searchCapital( term: string ): Observable<Country[]> {
     const url = `${this.apiUrl}/capital/${term}`;
     return this.getCountriesRequest(url)
@@ -47,12 +54,18 @@ export class CountriesService {
 
   searchCountry( term: string ): Observable<Country[]> {
     const url = `${this.apiUrl}/name/${term}`;
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+      .pipe(
+        tap( countries => this.cacheStore.byCountry = { term,countries })
+      );
   }
 
-  searchRegion( region: string ): Observable<Country[]> {
+  searchRegion( region: Region ): Observable<Country[]> {
     const url = `${this.apiUrl}/region/${region}`;
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+      .pipe(
+        tap( countries => this.cacheStore.byRegion = { region,countries } )
+      );
   }
 
 
