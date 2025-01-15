@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
-import { debounceTime, Subject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'shared-search-box',
@@ -12,10 +12,11 @@ import { debounceTime, Subject } from 'rxjs';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxComponent implements OnInit {
+export class SearchBoxComponent implements OnInit, OnDestroy {
 
   //*Subject es un tipo especial de observable de RXJS
   private debouncer: Subject<string> = new Subject<string>();
+  private debouncerSuscription?: Subscription;
 
   @Input()
   public placeholder: string = '';
@@ -36,13 +37,20 @@ export class SearchBoxComponent implements OnInit {
   //? el pipe funciona como un barrera (en este caso).
 
   ngOnInit(): void {
-    this.debouncer
+    this.debouncerSuscription = this.debouncer
     .pipe(
       debounceTime(300)
     )
     .subscribe( value => {
       this.onDebounce.emit(value);
     })
+  }
+
+  //* onDestroy es un detector de cambios de angular el cuál cuando nosotros
+  //* salimos de la ruta o se deja de rederizar el componente con un ngif
+  //* se detecta la destrucción
+  ngOnDestroy(): void {
+    this.debouncerSuscription?.unsubscribe();
   }
 
   emitValue ( value:string ):void {
