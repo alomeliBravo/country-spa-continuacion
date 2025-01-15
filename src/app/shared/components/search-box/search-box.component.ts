@@ -49,6 +49,14 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   //* onDestroy es un detector de cambios de angular el cuál cuando nosotros
   //* salimos de la ruta o se deja de rederizar el componente con un ngif
   //* se detecta la destrucción
+
+  //? Correción: OnDestroy es un ciclo de vida de Angular el cúal se utiliza para
+  //? realizar tareas de limpieza antes de que un componente o directiva sea destruido.
+  //? esto ocurre cuando sales de la ruta o dejamos de renderizar el componente
+  //? Es util para: Desuscribirse de los observables, limpiar timers, eliminar listeners
+  //? Cerrar conexiones, como con websockets
+  //? básicamente para liberar recursos o evitar fugas de memoria.
+
   ngOnDestroy(): void {
     this.debouncerSuscription?.unsubscribe();
   }
