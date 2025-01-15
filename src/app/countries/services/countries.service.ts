@@ -15,7 +15,7 @@ export class CountriesService {
     return this.http.get<Country[]>( url )
       .pipe(
         catchError( () => of([]) ),
-        delay( 1000 ) //Operador de RXJS para agregar un delay "delay(ms)".
+        // delay( 1000 ) //Operador de RXJS para agregar un delay "delay(ms)".
       )
   }
 

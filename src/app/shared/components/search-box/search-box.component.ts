@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'shared-search-box',
@@ -11,7 +12,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Ou
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxComponent {
+export class SearchBoxComponent implements OnInit {
+
+  //*Subject es un tipo especial de observable de RXJS
+  private debouncer: Subject<string> = new Subject<string>();
 
   @Input()
   public placeholder: string = '';
@@ -19,8 +23,34 @@ export class SearchBoxComponent {
   @Output()
   public onValue: EventEmitter<string> = new EventEmitter();
 
+  @Output()
+  public onDebounce = new EventEmitter<string>();
+
+  //* debounceTime es un operador de RXJS el cual recibe dos parametros
+  //* dueTime: Cuanto tiempo quiero esperar para esperar la siguiente emisión
+
+  //? Funcionalidad resumida: observable => pipe (recibe valor y espera 1 segundo) => vuelvo a recibir valor ? "vuelve a esperar" : "se subscribe"
+  //? El observable emite un valor, este valor pasa al pipe el cuál espera 1 segundo
+  //? si vuelve a recibir un valor entonces vuelve a esperar si despues de 1 segundo ya
+  //? no recibe un valor, entonces emite ese valor al subscribe
+  //? el pipe funciona como un barrera (en este caso).
+
+  ngOnInit(): void {
+    this.debouncer
+    .pipe(
+      debounceTime(300)
+    )
+    .subscribe( value => {
+      this.onDebounce.emit(value);
+    })
+  }
+
   emitValue ( value:string ):void {
     if (value === '' ) return;
     this.onValue.emit(value);
+  }
+
+  onKeyPress( searchTerm:string  ) {
+    this.debouncer.next( searchTerm );
   }
 }
